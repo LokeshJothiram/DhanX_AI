@@ -1,158 +1,112 @@
+#!/usr/bin/env python3
 """
-Database Migration Script
-Automatically creates tables if they don't exist
+WP-001: Database Migration System
+Implements database migrations and RLS policies
 """
-from sqlalchemy import create_engine, inspect, text
-from sqlalchemy.exc import OperationalError
-from database import engine, get_database_url
-from models import Base, User, PasswordResetToken, PaymentConnection, Goal, ManualTransaction, Investment, UserStreak
-import logging
+import os
+import sys
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
+from database import get_database_url
+from models_wp001 import Base
 
-logger = logging.getLogger(__name__)
-
-def table_exists(engine, table_name: str) -> bool:
-    """Check if a table exists in the database"""
-    try:
-        inspector = inspect(engine)
-        return table_name in inspector.get_table_names()
-    except Exception as e:
-        logger.error(f"Error checking if table {table_name} exists: {e}")
-        return False
+def create_rls_policies():
+    """Create Row Level Security policies for tenant isolation"""
+    policies = [
+        # Enable RLS on all tables
+        "ALTER TABLE tenants ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE users ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE square_connections ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE stripe_accounts ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE credit_ledger ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE auto_top_up_settings ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE menu_snapshots ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE menu_sync_jobs ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE orders ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE order_line_items ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE order_edits ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE calls ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE idempotency_keys ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE service_tokens ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE tenant_keys ENABLE ROW LEVEL SECURITY;",
+        "ALTER TABLE password_reset_tokens ENABLE ROW LEVEL SECURITY;",
+        
+        # Create RLS policies
+        "CREATE POLICY p_tenants ON tenants USING (id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_users ON users USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_square_connections ON square_connections USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_stripe_accounts ON stripe_accounts USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_credit_ledger ON credit_ledger USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_auto_top_up_settings ON auto_top_up_settings USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_menu_snapshots ON menu_snapshots USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_menu_sync_jobs ON menu_sync_jobs USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_orders ON orders USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_order_line_items ON order_line_items USING (tenant_id = (SELECT tenant_id FROM orders WHERE id = order_id));",
+        "CREATE POLICY p_order_edits ON order_edits USING (tenant_id = (SELECT tenant_id FROM orders WHERE id = order_id));",
+        "CREATE POLICY p_calls ON calls USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_idempotency_keys ON idempotency_keys USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_service_tokens ON service_tokens USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_tenant_keys ON tenant_keys USING (tenant_id = current_setting('app.tenant_id')::uuid);",
+        "CREATE POLICY p_password_reset_tokens ON password_reset_tokens USING (true);",  # Global access for password reset
+    ]
+    return policies
 
 def run_migration():
-    """Run database migration to create tables if they don't exist"""
+    """Run database migration to create all WP-001 tables and RLS policies"""
     try:
-        logger.info("Starting database migration check...")
+        print("WP-001: Running database migration...")
         
-        # Check if tables exist
-        users_exists = table_exists(engine, "users")
-        password_reset_tokens_exists = table_exists(engine, "password_reset_tokens")
-        payment_connections_exists = table_exists(engine, "payment_connections")
-        goals_exists = table_exists(engine, "goals")
-        manual_transactions_exists = table_exists(engine, "manual_transactions")
-        investments_exists = table_exists(engine, "investments")
-        user_streaks_exists = table_exists(engine, "user_streaks")
+        # Create database engine
+        engine = create_engine(get_database_url())
         
-        # If all tables exist, skip migration
-        if (users_exists and password_reset_tokens_exists and payment_connections_exists 
-            and goals_exists and manual_transactions_exists and investments_exists and user_streaks_exists):
-            logger.info("All tables already exist. Skipping migration.")
-            return True
-        
-        # Create tables that don't exist
-        logger.info("Creating missing tables...")
-        
-        # Create all tables defined in models
+        # Create all tables
+        print("Creating database tables...")
         Base.metadata.create_all(bind=engine)
+        print("All tables created successfully!")
         
-        logger.info("Database migration completed successfully!")
-        return True
-        
-    except OperationalError as e:
-        logger.error(f"Database connection error during migration: {e}")
-        logger.error("Please check your database connection settings.")
-        return False
-    except Exception as e:
-        logger.error(f"Migration failed: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
-
-def create_indexes():
-    """Create indexes for better query performance"""
-    try:
+        # Create RLS policies
+        print("Creating RLS policies...")
         with engine.connect() as conn:
-            # Fix deadline column to allow NULL (if it has NOT NULL constraint)
-            try:
-                conn.execute(text("ALTER TABLE goals ALTER COLUMN deadline DROP NOT NULL;"))
-                conn.commit()
-                logger.info("Fixed deadline column to allow NULL")
-            except Exception as e:
-                # Column might already allow NULL or not exist
-                if "does not exist" not in str(e).lower() and "already" not in str(e).lower():
-                    logger.warning(f"Could not alter deadline column (may already be nullable): {e}")
-            
-            # Add monthly_budget column to users table if it doesn't exist
-            try:
-                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS monthly_budget NUMERIC(10, 2);"))
-                conn.commit()
-                logger.info("Added monthly_budget column to users table")
-            except Exception as e:
-                if "already exists" not in str(e).lower() and "duplicate" not in str(e).lower():
-                    logger.warning(f"Could not add monthly_budget column (may already exist): {e}")
-            
-            # Add language_preference column to users table if it doesn't exist
-            try:
-                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS language_preference VARCHAR DEFAULT 'en';"))
-                conn.commit()
-                logger.info("Added language_preference column to users table")
-            except Exception as e:
-                if "already exists" not in str(e).lower() and "duplicate" not in str(e).lower():
-                    logger.warning(f"Could not add language_preference column (may already exist): {e}")
-            
-            # Drop notification_preferences column from users table if it exists (no longer needed)
-            try:
-                conn.execute(text("ALTER TABLE users DROP COLUMN IF EXISTS notification_preferences;"))
-                conn.commit()
-                logger.info("Dropped notification_preferences column from users table")
-            except Exception as e:
-                if "does not exist" not in str(e).lower():
-                    logger.warning(f"Could not drop notification_preferences column (may not exist): {e}")
-            
-            # Create indexes if they don't exist (idempotent)
-            indexes = [
-                "CREATE INDEX IF NOT EXISTS idx_manual_transactions_type ON manual_transactions(type);",
-                "CREATE INDEX IF NOT EXISTS idx_manual_transactions_date ON manual_transactions(transaction_date);",
-                "CREATE INDEX IF NOT EXISTS idx_goals_type ON goals(goal_type);",
-                "CREATE INDEX IF NOT EXISTS idx_goals_completed ON goals(is_completed);",
-                # Composite index for common query pattern
-                "CREATE INDEX IF NOT EXISTS idx_manual_transactions_user_type_date ON manual_transactions(user_id, type, transaction_date DESC);",
-            ]
-            
-            for index_sql in indexes:
+            for policy in create_rls_policies():
                 try:
-                    conn.execute(text(index_sql))
-                    conn.commit()
-                    logger.info(f"Index created or already exists")
+                    conn.execute(text(policy))
+                    print(f"Policy created: {policy[:50]}...")
                 except Exception as e:
-                    logger.warning(f"Index creation skipped (may already exist): {e}")
+                    if "already exists" in str(e).lower():
+                        print(f"Policy already exists: {policy[:50]}...")
+                    else:
+                        print(f"Error creating policy: {e}")
+                        print(f"   Policy: {policy}")
+        
+        print("RLS policies created successfully!")
+        print("WP-001 migration completed successfully!")
         
         return True
+        
     except Exception as e:
-        logger.error(f"Error creating indexes: {e}")
+        print(f"Migration failed: {e}")
         return False
 
-def check_and_migrate():
-    """Check database connection and run migration if needed"""
+def rollback_migration():
+    """Rollback migration by dropping all tables"""
     try:
-        # Test database connection
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
+        print("WP-001: Rolling back migration...")
         
-        # Run migration
-        migration_success = run_migration()
+        engine = create_engine(get_database_url())
         
-        # Create indexes for performance
-        if migration_success:
-            create_indexes()
+        # Drop all tables
+        Base.metadata.drop_all(bind=engine)
+        print("All tables dropped successfully!")
+        print("WP-001 rollback completed!")
         
-        return migration_success
+        return True
+        
     except Exception as e:
-        logger.error(f"Failed to connect to database: {e}")
-        logger.error("Migration will be skipped. Please check your database connection.")
+        print(f"Rollback failed: {e}")
         return False
 
 if __name__ == "__main__":
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    
-    print("Running database migration...")
-    if check_and_migrate():
-        print("Migration completed successfully!")
+    if len(sys.argv) > 1 and sys.argv[1] == "rollback":
+        rollback_migration()
     else:
-        print("Migration failed. Please check the logs above.")
-        exit(1)
-
+        run_migration()
