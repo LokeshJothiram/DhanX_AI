@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -35,9 +35,9 @@ const ConnectionsPage: React.FC = () => {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [availableConnections, setAvailableConnections] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [connectionDataDisplay, setConnectionDataDisplay] = useState<{name: string, data: any} | null>(null);
   const [connectingId, setConnectingId] = useState<string | null>(null);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const isConnectingRef = useRef(false);
   
   // Alert modal state
   const [alertModal, setAlertModal] = useState<{
@@ -84,7 +84,12 @@ const ConnectionsPage: React.FC = () => {
   }, []); // Remove connections from dependency array since we pass it as parameter
 
   // Update connections when shared data changes - use background loader only
+  // But don't overwrite if we're in the middle of a connection operation
   useEffect(() => {
+    // Don't overwrite local state if we're currently connecting/disconnecting
+    if (isConnectingRef.current) {
+      return;
+    }
     // Always use shared data from context (background loaded)
     setConnections(sharedConnections);
     setError(connectionsError);
@@ -112,6 +117,7 @@ const ConnectionsPage: React.FC = () => {
     const connectionKey = `${connection.name}-${connection.type}`;
     setConnectingId(connectionKey);
     setError(null);
+    isConnectingRef.current = true; // Prevent useEffect from overwriting
     
     try {
       const newConnection = await connectionsAPI.connect({
@@ -124,14 +130,19 @@ const ConnectionsPage: React.FC = () => {
       const updatedConnections = [...connections, newConnection];
       setConnections(updatedConnections);
       
-      // Refresh connections from context in background
-      refreshConnections().then(() => {
-        // After context updates, reload available connections
-        loadAvailableConnections(updatedConnections);
-      });
-      
-      // Also reload available connections immediately
-      await loadAvailableConnections(updatedConnections);
+      // Refresh connections from context - wait for it to complete
+      try {
+        await refreshConnections();
+        // After refresh completes, update local state with fresh data from context
+        // This ensures we have the latest data including any server-side updates
+        const freshConnections = await connectionsAPI.getConnections();
+        setConnections(freshConnections);
+        await loadAvailableConnections(freshConnections);
+      } catch (refreshErr) {
+        console.error('Error refreshing connections:', refreshErr);
+        // Even if refresh fails, keep the local update and reload available connections
+        await loadAvailableConnections(updatedConnections);
+      }
       
       // Refresh goals immediately (in case they were created synchronously)
       refreshGoals().catch(err => console.error('Error refreshing goals:', err));
@@ -141,12 +152,6 @@ const ConnectionsPage: React.FC = () => {
       setTimeout(() => {
         refreshGoals().catch(err => console.error('Error refreshing goals (delayed):', err));
       }, 6000);
-      
-      // Display the connection data in JSON format
-      setConnectionDataDisplay({
-        name: newConnection.name,
-        data: newConnection
-      });
       
       // Show success message
       setAlertModal({
@@ -172,13 +177,22 @@ const ConnectionsPage: React.FC = () => {
         type: 'error',
       });
       // Refresh on error to get correct state
-      await refreshConnections();
+      try {
+        await refreshConnections();
+      } catch (refreshErr) {
+        console.error('Error refreshing after connection error:', refreshErr);
+      }
     } finally {
       setConnectingId(null);
+      // Allow useEffect to sync again after a short delay
+      setTimeout(() => {
+        isConnectingRef.current = false;
+      }, 1000);
     }
   };
 
   const handleDisconnect = async (id: string) => {
+    isConnectingRef.current = true; // Prevent useEffect from overwriting
     try {
       setError(null);
       const response = await connectionsAPI.disconnect(id);
@@ -189,14 +203,18 @@ const ConnectionsPage: React.FC = () => {
       const updatedConnections = connections.filter(c => c.id !== id);
       setConnections(updatedConnections);
       
-      // Refresh connections from context in background
-      refreshConnections().then(() => {
-        // After context updates, reload available connections
-        loadAvailableConnections(updatedConnections);
-      });
-      
-      // Also reload available connections immediately
-      await loadAvailableConnections(updatedConnections);
+      // Refresh connections from context - wait for it to complete
+      try {
+        await refreshConnections();
+        // After refresh completes, update local state with fresh data from context
+        const freshConnections = await connectionsAPI.getConnections();
+        setConnections(freshConnections);
+        await loadAvailableConnections(freshConnections);
+      } catch (refreshErr) {
+        console.error('Error refreshing connections:', refreshErr);
+        // Even if refresh fails, keep the local update and reload available connections
+        await loadAvailableConnections(updatedConnections);
+      }
     } catch (err: any) {
       setError(err.response?.data?.detail || t('connections.failedToDisconnect'));
       console.error('Error disconnecting:', err);
@@ -207,7 +225,16 @@ const ConnectionsPage: React.FC = () => {
         type: 'error',
       });
       // Refresh on error to get correct state
-      await refreshConnections();
+      try {
+        await refreshConnections();
+      } catch (refreshErr) {
+        console.error('Error refreshing after disconnect error:', refreshErr);
+      }
+    } finally {
+      // Allow useEffect to sync again after a short delay
+      setTimeout(() => {
+        isConnectingRef.current = false;
+      }, 1000);
     }
   };
 
@@ -300,32 +327,6 @@ const ConnectionsPage: React.FC = () => {
               {t('connections.retry')}
           </button>
         </div>
-        </motion.div>
-      )}
-
-      {/* Connection Data Display */}
-      {connectionDataDisplay && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-900/40 backdrop-blur-2xl rounded-xl p-6 border border-violet-500/20 shadow-xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white">
-              {t('connections.connectionData')}: {connectionDataDisplay.name}
-            </h2>
-            <button
-              onClick={() => setConnectionDataDisplay(null)}
-              className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-all"
-            >
-              <XCircleIcon className="h-5 w-5" />
-            </button>
-          </div>
-          <div className="bg-slate-950/50 rounded-lg p-4 border border-violet-500/10 overflow-auto max-h-96">
-            <pre className="text-sm text-white/80 font-mono whitespace-pre-wrap break-words">
-              {JSON.stringify(connectionDataDisplay.data, null, 2)}
-            </pre>
-          </div>
         </motion.div>
       )}
 
