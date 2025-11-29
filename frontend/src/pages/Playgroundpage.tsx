@@ -511,7 +511,7 @@ const PlaygroundPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Agent Playground</h1>
-          <p className="text-white/70">Watch your financial agents work in real-time. Type commands to see them execute!</p>
+          <p className="text-white/70">Watch your financial agents work in real-time. Share any income, expense, or money question and see how the agents respond.</p>
         </div>
         <button
           onClick={handleClearChat}
@@ -663,7 +663,7 @@ const PlaygroundPage: React.FC = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type +1000 for income, -1000 for expense, or ask a question..."
+                    placeholder="Describe an income, expense, or ask a question about your money..."
                     className="flex-1 px-4 py-3 bg-white/5 backdrop-blur-xl border border-violet-500/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
                     disabled={isProcessing}
                   />
@@ -676,7 +676,7 @@ const PlaygroundPage: React.FC = () => {
                   </button>
                 </div>
                 <div className="mt-2 text-xs text-white/50">
-                  <p>💡 Try: <code className="bg-white/10 px-1.5 py-0.5 rounded text-violet-300">+1000</code> to add income, <code className="bg-white/10 px-1.5 py-0.5 rounded text-violet-300">-1000</code> to add expense</p>
+                  <p>💡 Try examples like <code className="bg-white/10 px-1.5 py-0.5 rounded text-violet-300">I received ₹10,000 salary</code> or <code className="bg-white/10 px-1.5 py-0.5 rounded text-violet-300">I spent ₹2,000 on groceries</code>, or ask <code className="bg-white/10 px-1.5 py-0.5 rounded text-violet-300">How is my spending this month?</code></p>
                 </div>
               </div>
             </div>
