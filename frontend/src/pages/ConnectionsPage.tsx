@@ -59,7 +59,8 @@ const ConnectionsPage: React.FC = () => {
       const data = await connectionsAPI.getAvailableConnections();
       
       // Use provided connections or fallback to empty array
-      const connectionsToUse = currentConnections || [];
+      // Only consider connected accounts when checking what's already connected
+      const connectionsToUse = (currentConnections || []).filter(c => c.status === 'connected');
       
       // Normalize names for comparison (trim whitespace, case-insensitive)
       // Use Set for O(1) lookup instead of array includes
@@ -333,13 +334,16 @@ const ConnectionsPage: React.FC = () => {
       {/* Connected Accounts */}
       <div>
         <h2 className="text-xl font-bold text-white mb-4">{t('connections.connectedAccounts')}</h2>
-        {connections.length === 0 ? (
-          <div className="bg-slate-900/40 backdrop-blur-2xl rounded-xl p-8 border border-violet-500/20 shadow-xl text-center">
-            <p className="text-white/60">{t('connections.noConnections')}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {connections.map((connection, index) => (
+        {(() => {
+          // Filter to only show connected accounts
+          const connectedAccounts = connections.filter(conn => conn.status === 'connected');
+          return connectedAccounts.length === 0 ? (
+            <div className="bg-slate-900/40 backdrop-blur-2xl rounded-xl p-8 border border-violet-500/20 shadow-xl text-center">
+              <p className="text-white/60">{t('connections.noConnections')}</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {connectedAccounts.map((connection, index) => (
             <motion.div
               key={connection.id}
               initial="hidden"
@@ -397,9 +401,10 @@ const ConnectionsPage: React.FC = () => {
                 </div>
               </div>
             </motion.div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Available Connections */}

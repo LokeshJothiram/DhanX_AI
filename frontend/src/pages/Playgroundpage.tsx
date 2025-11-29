@@ -89,7 +89,7 @@ const PlaygroundPage: React.FC = () => {
     return [
       {
         id: 1,
-        text: 'Welcome to the Agent Playground! Type commands like "+1000" to add income or "-1000" to add expense, and watch the agents work!',
+        text: 'Hello! 👋 I\'m your AI financial assistant. I work with specialized agents to help manage your finances—tracking income, monitoring spending, planning goals, and building your emergency fund. Feel free to share your financial updates or ask me anything about your money!',
         sender: 'system',
         timestamp: new Date(),
       },
@@ -474,7 +474,7 @@ const PlaygroundPage: React.FC = () => {
     // Clear messages and reset to welcome message
     const welcomeMessage: Message = {
       id: 1,
-      text: 'Welcome to the Agent Playground! Type commands like "+1000" to add income or "-1000" to add expense, and watch the agents work!',
+      text: 'Hello! 👋 I\'m your AI financial assistant. I work with specialized agents to help manage your finances—tracking income, monitoring spending, planning goals, and building your emergency fund. Feel free to share your financial updates or ask me anything about your money!',
       sender: 'system',
       timestamp: new Date(),
     };

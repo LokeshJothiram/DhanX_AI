@@ -347,7 +347,11 @@ def get_connection_by_id(db: Session, connection_id: UUID, user_id: UUID):
 
 def disconnect_connection(db: Session, connection_id: UUID, user_id: UUID):
     """Disconnect a payment connection - marks as disconnected instead of deleting to preserve allocated_transaction_ids"""
-    connection = get_connection_by_id(db, connection_id, user_id)
+    # Get connection directly from database without parsing to avoid JSON encoding issues
+    connection = db.query(PaymentConnection).filter(
+        PaymentConnection.id == connection_id,
+        PaymentConnection.user_id == user_id
+    ).first()
     
     if not connection:
         raise HTTPException(
@@ -355,11 +359,21 @@ def disconnect_connection(db: Session, connection_id: UUID, user_id: UUID):
             detail="Connection not found"
         )
     
-    # Store connection_data before disconnecting
-    connection_data = connection.connection_data
+    # Store connection_data before disconnecting (parse it for return value)
+    connection_data = None
+    if connection.connection_data:
+        try:
+            # Parse for return value
+            if isinstance(connection.connection_data, str):
+                connection_data = json.loads(connection.connection_data)
+            else:
+                connection_data = connection.connection_data
+        except (json.JSONDecodeError, TypeError):
+            connection_data = None
     
     # Mark as disconnected instead of deleting - this preserves allocated_transaction_ids
     # so reconnecting won't cause duplicate allocations
+    # CRITICAL: connection_data is already a JSON string from the database, so we don't need to re-encode it
     connection.status = "disconnected"
     db.commit()
     db.refresh(connection)
