@@ -1,0 +1,28 @@
+{
+    "account_id": "testincome_123456",
+    "upi_id": "testincome@test",
+    "phone_number": "+91-9999999999",
+    "email": "testincome@example.com",
+    "status": "active",
+    "balance": 1000.00,
+    "account_holder_name": "Test Income User",
+    "bank_linked": "Test Bank",
+    "account_number": "****9999",
+    "transactions": [
+      {
+        "id": "txn_testincome_001",
+        "amount": 1000.00,
+        "type": "credit",
+        "description": "Test income payment",
+        "timestamp": "2025-11-21T10:00:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 1000.00,
+      "total_debit": 0.00,
+      "transaction_count": 1
+    }
+  }
+  
+  

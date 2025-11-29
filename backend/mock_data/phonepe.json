@@ -1,0 +1,233 @@
+{
+    "account_id": "phonepe_123456789",
+    "upi_id": "user@phonepe",
+    "phone_number": "+91-9876543210",
+    "status": "active",
+    "balance": 12500.5,
+    "account_holder_name": "John Doe",
+    "bank_linked": "HDFC Bank",
+    "account_number": "****1234",
+    "transactions": [
+      {
+        "id": "txn_recent_027",
+        "amount": 2000.0,
+        "type": "credit",
+        "description": "test",
+        "timestamp": "2025-11-29T16:00:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_026",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "ee",
+        "timestamp": "2025-11-27T02:35:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_025",
+        "amount": 3000.0,
+        "type": "debit",
+        "description": "oook",
+        "timestamp": "2025-11-27T01:56:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_024",
+        "amount": 4500.0,
+        "type": "credit",
+        "description": "test5",
+        "timestamp": "2025-11-27T18:15:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_023",
+        "amount": 2000.0,
+        "type": "credit",
+        "description": "tes",
+        "timestamp": "2025-11-26T17:13:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_022",
+        "amount": 6000.0,
+        "type": "credit",
+        "description": "test",
+        "timestamp": "2025-11-26T16:52:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_021",
+        "amount": 1500.0,
+        "type": "credit",
+        "description": "jjj",
+        "timestamp": "2025-11-25T17:35:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_020",
+        "amount": 500.0,
+        "type": "credit",
+        "description": "ee",
+        "timestamp": "2025-11-24T17:31:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_019",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "ee",
+        "timestamp": "2025-11-24T15:24:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_018",
+        "amount": 2500.0,
+        "type": "credit",
+        "description": "jj",
+        "timestamp": "2025-11-26T12:48:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_017",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "qw",
+        "timestamp": "2025-11-24T11:46:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_016",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "tret",
+        "timestamp": "2025-11-25T08:41:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_015",
+        "amount": 3000.0,
+        "type": "credit",
+        "description": "lllllllllllllllll",
+        "timestamp": "2025-11-26T08:37:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_014",
+        "amount": 500.0,
+        "type": "credit",
+        "description": "ikil",
+        "timestamp": "2025-11-24T08:31:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_013",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "ret",
+        "timestamp": "2025-11-23T09:25:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_012",
+        "amount": 2000.0,
+        "type": "credit",
+        "description": "ttt",
+        "timestamp": "2025-11-24T06:11:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_011",
+        "amount": 1500.0,
+        "type": "credit",
+        "description": "kk",
+        "timestamp": "2025-11-23T04:15:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_010",
+        "amount": 500.0,
+        "type": "credit",
+        "description": "edd",
+        "timestamp": "2025-11-23T04:11:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_009",
+        "amount": 2000.0,
+        "type": "credit",
+        "description": "okkkk",
+        "timestamp": "2025-11-23T04:07:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_008",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "yy",
+        "timestamp": "2025-11-22T22:45:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_007",
+        "amount": 4000.0,
+        "type": "credit",
+        "description": "test check",
+        "timestamp": "2025-11-22T22:35:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_006",
+        "amount": 1000.0,
+        "type": "credit",
+        "description": "eee",
+        "timestamp": "2025-11-22T16:50:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_005",
+        "amount": 3000.0,
+        "type": "credit",
+        "description": "t",
+        "timestamp": "2025-11-23T14:35:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_001",
+        "amount": 1200.0,
+        "type": "credit",
+        "description": "Payment received from Customer A",
+        "timestamp": "2025-11-20T10:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_002",
+        "amount": 450.0,
+        "type": "debit",
+        "description": "Grocery payment",
+        "timestamp": "2025-11-20T14:20:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_003",
+        "amount": 800.0,
+        "type": "credit",
+        "description": "Freelance payment received",
+        "timestamp": "2025-11-18T09:15:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_004",
+        "amount": 300.0,
+        "type": "debit",
+        "description": "Mobile recharge",
+        "timestamp": "2025-11-17T16:45:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 44500.0,
+      "total_debit": 3750.0,
+      "transaction_count": 27
+    }
+  }

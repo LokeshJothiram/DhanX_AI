@@ -1,0 +1,69 @@
+{
+    "account_id": "paytm_456789123",
+    "upi_id": "user@paytm",
+    "phone_number": "+91-9876543210",
+    "status": "active",
+    "balance": 5600.75,
+    "account_holder_name": "John Doe",
+    "bank_linked": "SBI Bank",
+    "account_number": "****9012",
+    "wallet_balance": 500.00,
+    "transactions": [
+      {
+        "id": "txn_recent_009",
+        "amount": 1100.00,
+        "type": "credit",
+        "description": "Payment received from Customer C",
+        "timestamp": "2025-11-20T11:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_010",
+        "amount": 350.00,
+        "type": "debit",
+        "description": "Electricity bill payment",
+        "timestamp": "2025-11-20T15:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_011",
+        "amount": 700.00,
+        "type": "credit",
+        "description": "Gig work payment",
+        "timestamp": "2025-11-18T13:45:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_012",
+        "amount": 250.00,
+        "type": "debit",
+        "description": "Internet bill",
+        "timestamp": "2025-11-17T10:20:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_005",
+        "amount": 750.00,
+        "type": "credit",
+        "description": "Payment received from Customer C",
+        "timestamp": "2024-01-15T11:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_006",
+        "amount": 300.00,
+        "type": "debit",
+        "description": "Mobile recharge",
+        "timestamp": "2024-01-15T15:30:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 8500.00,
+      "total_debit": 2900.00,
+      "transaction_count": 32
+    },
+    "cashback_earned": 125.50
+  }
+  
+  

@@ -1,0 +1,69 @@
+{
+    "account_id": "icici_321654987",
+    "account_number": "602345678901",
+    "ifsc_code": "ICIC0002345",
+    "account_type": "Current",
+    "status": "active",
+    "balance": 75000.00,
+    "account_holder_name": "John Doe",
+    "branch": "Delhi Branch",
+    "transactions": [
+      {
+        "id": "txn_recent_017",
+        "amount": 12000.00,
+        "type": "credit",
+        "description": "Business payment received",
+        "timestamp": "2025-11-18T12:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_018",
+        "amount": 4000.00,
+        "type": "debit",
+        "description": "Vendor payment",
+        "timestamp": "2025-11-18T14:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_019",
+        "amount": 8000.00,
+        "type": "credit",
+        "description": "Client payment",
+        "timestamp": "2025-11-16T09:45:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_020",
+        "amount": 2500.00,
+        "type": "debit",
+        "description": "Office rent",
+        "timestamp": "2025-11-15T11:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_009",
+        "amount": 10000.00,
+        "type": "credit",
+        "description": "Business payment received",
+        "timestamp": "2024-01-10T12:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_010",
+        "amount": 3500.00,
+        "type": "debit",
+        "description": "Vendor payment",
+        "timestamp": "2024-01-12T14:30:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 25000.00,
+      "total_debit": 15000.00,
+      "transaction_count": 28
+    },
+    "overdraft_limit": 50000.00,
+    "interest_charged": 0.00
+  }
+  
+  

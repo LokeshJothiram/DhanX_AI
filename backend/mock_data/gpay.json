@@ -1,0 +1,69 @@
+{
+    "account_id": "gpay_987654321",
+    "upi_id": "user@gpay",
+    "phone_number": "+91-9876543210",
+    "email": "user@example.com",
+    "status": "active",
+    "balance": 8750.25,
+    "account_holder_name": "John Doe",
+    "bank_linked": "ICICI Bank",
+    "account_number": "****5678",
+    "transactions": [
+      {
+        "id": "txn_recent_005",
+        "amount": 1500.00,
+        "type": "credit",
+        "description": "Payment received from Customer B",
+        "timestamp": "2025-11-19T09:15:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_006",
+        "amount": 600.00,
+        "type": "debit",
+        "description": "Restaurant payment",
+        "timestamp": "2025-11-19T19:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_007",
+        "amount": 900.00,
+        "type": "credit",
+        "description": "Delivery payment received",
+        "timestamp": "2025-11-17T11:20:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_008",
+        "amount": 200.00,
+        "type": "debit",
+        "description": "Transport payment",
+        "timestamp": "2025-11-16T08:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_003",
+        "amount": 1000.00,
+        "type": "credit",
+        "description": "Payment received from Customer B",
+        "timestamp": "2024-01-15T09:15:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_004",
+        "amount": 500.00,
+        "type": "debit",
+        "description": "Payment to Service Provider",
+        "timestamp": "2024-01-15T16:45:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 12000.00,
+      "total_debit": 3250.00,
+      "transaction_count": 38
+    },
+    "rewards_points": 1250
+  }
+  
+  

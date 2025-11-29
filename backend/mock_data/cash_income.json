@@ -1,0 +1,62 @@
+{
+    "account_id": "cash_income_manual",
+    "type": "manual",
+    "status": "active",
+    "description": "Manual cash income tracking",
+    "entries": [
+      {
+        "id": "entry_recent_005",
+        "amount": 100.0,
+        "description": "Test 2",
+        "date": "2025-11-22",
+        "category": "Income"
+      },
+      {
+        "id": "entry_recent_001",
+        "amount": 2500.0,
+        "description": "Cash payment from client",
+        "date": "2025-11-20",
+        "category": "Income"
+      },
+      {
+        "id": "entry_recent_002",
+        "amount": 800.0,
+        "description": "Tips received",
+        "date": "2025-11-19",
+        "category": "Income"
+      },
+      {
+        "id": "entry_recent_003",
+        "amount": 1500.0,
+        "description": "Cash delivery payment",
+        "date": "2025-11-17",
+        "category": "Income"
+      },
+      {
+        "id": "entry_recent_004",
+        "amount": 600.0,
+        "description": "Side gig cash payment",
+        "date": "2025-11-15",
+        "category": "Income"
+      },
+      {
+        "id": "entry_001",
+        "amount": 2000.0,
+        "description": "Cash payment from client",
+        "date": "2024-01-15",
+        "category": "Income"
+      },
+      {
+        "id": "entry_002",
+        "amount": 500.0,
+        "description": "Tips received",
+        "date": "2024-01-14",
+        "category": "Income"
+      }
+    ],
+    "monthly_summary": {
+      "total_income": 8000.0,
+      "entry_count": 7
+    },
+    "notes": "Track all cash transactions manually"
+  }

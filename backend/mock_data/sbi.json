@@ -1,0 +1,75 @@
+{
+    "account_id": "sbi_654987321",
+    "account_number": "703456789012",
+    "ifsc_code": "SBIN0003456",
+    "account_type": "Savings",
+    "status": "active",
+    "balance": 95000.0,
+    "account_holder_name": "John Doe",
+    "branch": "Bangalore Branch",
+    "transactions": [
+      {
+        "id": "txn_recent_001",
+        "amount": 2999.98,
+        "type": "credit",
+        "description": "test",
+        "timestamp": "2025-11-26T16:58:00.000Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_021",
+        "amount": 5000.0,
+        "type": "credit",
+        "description": "Freelance payment",
+        "timestamp": "2025-11-19T09:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_022",
+        "amount": 1800.0,
+        "type": "debit",
+        "description": "Utility bill payment",
+        "timestamp": "2025-11-19T11:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_023",
+        "amount": 3500.0,
+        "type": "credit",
+        "description": "Project payment",
+        "timestamp": "2025-11-17T10:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_024",
+        "amount": 1200.0,
+        "type": "debit",
+        "description": "Insurance premium",
+        "timestamp": "2025-11-16T15:20:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_011",
+        "amount": 3000.0,
+        "type": "credit",
+        "description": "Freelance payment",
+        "timestamp": "2024-01-08T09:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_012",
+        "amount": 1500.0,
+        "type": "debit",
+        "description": "Utility bill payment",
+        "timestamp": "2024-01-14T11:00:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 10999.98,
+      "total_debit": 4500.0,
+      "transaction_count": 7
+    },
+    "interest_earned": 95.0,
+    "minimum_balance": 5000.0
+  }

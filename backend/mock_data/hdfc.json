@@ -1,0 +1,69 @@
+{
+    "account_id": "hdfc_789123456",
+    "account_number": "501234567890",
+    "ifsc_code": "HDFC0001234",
+    "account_type": "Savings",
+    "status": "active",
+    "balance": 125000.00,
+    "account_holder_name": "John Doe",
+    "branch": "Mumbai Main Branch",
+    "transactions": [
+      {
+        "id": "txn_recent_013",
+        "amount": 15000.00,
+        "type": "credit",
+        "description": "Salary credit",
+        "timestamp": "2025-11-19T00:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_014",
+        "amount": 5000.00,
+        "type": "debit",
+        "description": "EMI payment",
+        "timestamp": "2025-11-19T10:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_015",
+        "amount": 3000.00,
+        "type": "credit",
+        "description": "Bonus received",
+        "timestamp": "2025-11-17T12:30:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_recent_016",
+        "amount": 2000.00,
+        "type": "debit",
+        "description": "Credit card payment",
+        "timestamp": "2025-11-16T14:15:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_007",
+        "amount": 5000.00,
+        "type": "credit",
+        "description": "Salary credit",
+        "timestamp": "2024-01-01T00:00:00Z",
+        "status": "completed"
+      },
+      {
+        "id": "txn_008",
+        "amount": 2500.00,
+        "type": "debit",
+        "description": "EMI payment",
+        "timestamp": "2024-01-05T10:00:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 5000.00,
+      "total_debit": 2500.00,
+      "transaction_count": 12
+    },
+    "interest_earned": 125.50,
+    "fd_amount": 50000.00
+  }
+  
+  

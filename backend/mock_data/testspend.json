@@ -1,0 +1,28 @@
+{
+    "account_id": "testspend_123456",
+    "upi_id": "testspend@test",
+    "phone_number": "+91-8888888888",
+    "email": "testspend@example.com",
+    "status": "active",
+    "balance": 500.00,
+    "account_holder_name": "Test Spend User",
+    "bank_linked": "Test Bank",
+    "account_number": "****8888",
+    "transactions": [
+      {
+        "id": "txn_testspend_001",
+        "amount": 500.00,
+        "type": "debit",
+        "description": "Test expense payment",
+        "timestamp": "2025-11-21T14:30:00Z",
+        "status": "completed"
+      }
+    ],
+    "monthly_summary": {
+      "total_credit": 0.00,
+      "total_debit": 500.00,
+      "transaction_count": 1
+    }
+  }
+  
+  
